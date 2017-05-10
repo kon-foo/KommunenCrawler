@@ -1,0 +1,22 @@
+NUMBER_OF_THREADS: 4
+
+RelevanceCheck:
+  # stoppwords: traindata/german
+  # traindata: traindata/allpositive.csv
+  mindestähnlichkeit: 0.4
+  schwellenwert: -0.4
+  ngramrange: [1,2]
+  keywords: ['Bürgerbeteiligung', 'Bürgerhaushalt', 'Bürgerversamlung', 'Zukunftswerkstatt', 'Runder Tisch', 'Planungsworkshop', 'Planungszelle', 'Leitlinien Bürgerbeteiligung', 'Beteiligungsleitlinien']
+
+
+Crawler:
+  CRAWLDEPTH: 3
+
+Databases:
+  INPUT_DB: /gemeindedatenbank.db
+  OUTPUT_DB: /staedtebbsites.db
+
+Google-Settings:
+  API_KEY: 
+  CUSTOM_SEARCH_ENGINE: 
+  STANDARD_KEYWORD:  Bürgerbeteiligung
