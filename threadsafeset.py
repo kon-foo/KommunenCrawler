@@ -1,3 +1,6 @@
+'''Folgender Code stammt aus: https://stackoverflow.com/questions/13610654/how-to-make-built-in-containers-sets-dicts-lists-thread-safe
+und wurde dort am 29.11.2012 vom User: Francis Avila (https://stackoverflow.com/users/1002469/francis-avila) veröffentlicht.
+Er wurde meinerseits nur leicht für Python3 modifiziert.'''
 from threading import Lock
 
 def lock_class(methodnames, lockfactory):
@@ -25,23 +28,10 @@ def make_threadsafe(cls, methodnames, lockfactory):
         oldmethod = getattr(cls, methodname)
         newmethod = lock_method(oldmethod)
         setattr(cls, methodname, newmethod)
-
     return cls
-
 
 @lock_class(['add','remove','__contains__','pop','copy'], Lock)
 class LockedSet(set):
     @lock_method # if you double-lock a method, a TypeError is raised
     def frobnify(self):
         pass
-
-if __name__ == '__main__':
-    a = LockedSet(set())
-    a.add('A')
-    if a.__contains__('A'):
-        print('True')
-    if a.__contains__('B'):
-        print('B')
-    for el in a:
-        print(el)
-    print(len(a))

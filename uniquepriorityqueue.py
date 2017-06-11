@@ -1,4 +1,6 @@
-# Für Python 3 optimiert. Quelle: https://gist.github.com/macieksk/9743413
+'''Folgender Code stammt aus: https://gist.github.com/macieksk/9743413
+und wurde dort am 29.11.2012 vom User: Maciek Sykulski (https://gist.github.com/macieksk) veröffentlicht.
+Er wurde meinerseits nur leicht für Python3 modifiziert.'''
 from queue import PriorityQueue
 import heapq
 
@@ -10,13 +12,11 @@ class UniquePriorityQueueWithReplace(PriorityQueue):
         self.values = dict()
         self.size_diff = 0
 
-    def _put(self, item): #, heappush=heapq.heappush):
+    def _put(self, item):
         heappush=heapq.heappush
-        #print "UQPUT:",item
         if item[1] not in self.values:
-            #print 'uniq',item[1]
             self.values[item[1]] = [1,1,True]
-            PriorityQueue._put(self, (item,1)) #, heappush)
+            PriorityQueue._put(self, (item,1))
         else:
             validity = self.values[item[1]]
             validity[0] += 1   #Number of the valid entry
@@ -24,20 +24,18 @@ class UniquePriorityQueueWithReplace(PriorityQueue):
             if validity[2]:    #Is this a replace move?
                 self.size_diff += 1
             validity[2] = True
-            PriorityQueue._put(self, (item,validity[0])) #, heappush)
+            PriorityQueue._put(self, (item,validity[0]))
 
-    def _get(self):#, heappop=heapq.heappop):
+    def _get(self):
         heappop=heapq.heappop
         while True:
-            item,i = PriorityQueue._get(self)#, heappop)
+            item,i = PriorityQueue._get(self)
             validity = self.values[item[1]]
-            #print "UQGET_TRY:",item
             if validity[1] <= 1:
                 del self.values[item[1]]
             else:
                 validity[1] -= 1    #Reduce the count
             if i == validity[0]:
-                #print "UQGET_RET:",item
                 validity[2]=False
                 return item
             else:
@@ -47,8 +45,7 @@ class UniquePriorityQueueWithReplace(PriorityQueue):
         return len(self.queue)-self.size_diff
 
     def task_done(self):
-        """Changed for proper size estimation
-        """
+        """Changed for proper size estimation"""
         self.all_tasks_done.acquire()
         try:
             #Here
@@ -87,42 +84,37 @@ class UniquePriorityQueueWithReplace(PriorityQueue):
 #         self.values.remove(item)
 #         return item
 #
-if __name__=='__main__':
-    import random, string, time, threading
-
-    u = UniquePriorityQueueWithReplace()
-    allqsize = []
-
-
-    def printer():
-        if not len(allqsize) == 0:
-            print(allqsize.pop())
-        threading.Timer(1, printer)
-        return
-
-    def testqueue():
-        u.put((random.randint(0,9), randomword()))
-        u.put((random.randint(0,9), randomword()))
-        #a = u.get()
-        #u.put((random.randint(0,9), a[1]))
-        u.task_done()
-        print(u.qsize())
-        time.sleep(0.1)
-        return
-
-    def randomword():
-        length = 5
-        return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
-
-
-    printer()
-
-    for _ in range(0,1000000):
-        t = threading.Thread(target=testqueue)
-        t.deamon = True
-        t.start()
-
-
-    # while not u.empty():
-    #     item = u.get_nowait()
-    #     print (item)
+# if __name__=='__main__':
+#     import random, string, time, threading
+#
+#     u = UniquePriorityQueueWithReplace()
+#     allqsize = []
+#
+#
+#     def printer():
+#         if not len(allqsize) == 0:
+#             print(allqsize.pop())
+#         threading.Timer(1, printer)
+#         return
+#
+#     def testqueue():
+#         u.put((random.randint(0,9), randomword()))
+#         u.put((random.randint(0,9), randomword()))
+#         #a = u.get()
+#         #u.put((random.randint(0,9), a[1]))
+#         u.task_done()
+#         print(u.qsize())
+#         time.sleep(0.1)
+#         return
+#
+#     def randomword():
+#         length = 5
+#         return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+#
+#
+#     printer()
+#
+#     for _ in range(0,1000000):
+#         t = threading.Thread(target=testqueue)
+#         t.deamon = True
+#         t.start()

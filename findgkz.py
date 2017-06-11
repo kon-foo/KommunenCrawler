@@ -1,8 +1,8 @@
 import sqlite3
 import os
 
-name = str(input('Für welche Stadt möchtest du die Gemeindekennziffer wissen? '))
-
+'''Findet die GKZ aller STädte, auf die der Name zutrifft.'''
+name = str(input('Für welche Stadt möchtest du die Gemeindekennziffer heraufinden? '))
 db = os.path.abspath(os.pardir) + '/gemeindedatenbank.db'
 connection = sqlite3.connect(db)
 c = connection.cursor()

@@ -4,7 +4,7 @@ import csv
 from sys import maxsize
 csv.field_size_limit(maxsize)
 
-# Write Operations:
+'''Schreib Operationen'''
 def write_iterable_to_file(path, data):
     with open(path, 'w') as f:
         for tupl in data:
@@ -20,9 +20,8 @@ def append_row_to_csv(path, row):
         writer.writerow(row)
 
 
-# Read Operations
+'''Lese Operationen'''
 def file_to_set(file_name):
-    #pathandfile = os.path.join("LinkQueues/" , file_name)
     out = set()
     with open(file_name, 'rt') as f:
         try: # If a line in the file seems to be a tuple: Create set of tuples

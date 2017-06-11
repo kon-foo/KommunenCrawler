@@ -3,6 +3,7 @@ import logging
 import yaml
 from googleapiclient import discovery
 logger = logging.getLogger(__name__)
+
 if os.path.isfile('configuration.local.yaml'):
     with open ('configuration.local.yaml', 'r') as f:
         config = yaml.load(f)
@@ -15,6 +16,9 @@ GOOGLE_API = config['Google-Settings']['API_KEY']
 CUSTOM_SEARCH_ENGINE = config['Google-Settings']['CUSTOM_SEARCH_ENGINE']
 STANDARD_KEYWORD = config['Google-Settings']['STANDARD_KEYWORD']
 
+'''Nutzt die Google-Suche-API, um die ersten 10 Links zu bekommen.
+Dazu wird eine Suchanfrage, die sich auf die zu durchsuchende Domain beschränkt,
+mit dem Keyword Bürgerbeteiligung durchgeführt.'''
 
 def get_starting_point(gkz, domain, homepage):
     tempqueue = []
@@ -53,6 +57,7 @@ def google_searchandextract_with_api(domain):
     return googlequeue
 
 def search(domain, keyword ): #, fheaders):
+    '''Funktiniert auch ohne API, dann ist es aber gegen die Google-Geschäftsbedingungen.'''
     q = quote('site:{} {}'.format(domain, keyword))
     user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de-DE; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
     search = 'https://www.google.de/search?&q={}'.format(q)
@@ -88,9 +93,3 @@ def google_searchandextract_without_api(domain):
     for link in extract(search(domain, STANDARD_KEYWORD)):
         googlequeue.append(link)
     return googlequeue
-
-if __name__ == '__main__':
-    # links = google_searchandextract('hamburg.de')
-    links = google_searchandextract_with_api('hamburg.de')
-    for l in links:
-        print(l)

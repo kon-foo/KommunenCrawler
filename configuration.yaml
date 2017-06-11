@@ -1,22 +1,29 @@
-NUMBER_OF_THREADS: 4
+NUMBER_OF_THREADS: 8
 
 RelevanceCheck:
-  # stoppwords: traindata/german
-  # traindata: traindata/allpositive.csv
-  mindestähnlichkeit: 0.4
-  schwellenwert: -0.4
+  kernel: sigmoid
+  nu: 0.05
+  gamma: 0.1
+  coef0: -1
+  degree: 3
+  schwellenwert: -0.883
+
+  vectorizer: count
+  percentfeatures: 0.5
   ngramrange: [1,2]
   keywords: ['Bürgerbeteiligung', 'Bürgerhaushalt', 'Bürgerversamlung', 'Zukunftswerkstatt', 'Runder Tisch', 'Planungsworkshop', 'Planungszelle', 'Leitlinien Bürgerbeteiligung', 'Beteiligungsleitlinien']
 
 
 Crawler:
+  user-agent: KommunenCrawler | https://github.com/elpunkt/KommunenCrawler/
   CRAWLDEPTH: 3
+  crawlfrequenz: 4
 
 Databases:
   INPUT_DB: /gemeindedatenbank.db
   OUTPUT_DB: /staedtebbsites.db
 
 Google-Settings:
-  API_KEY: 
-  CUSTOM_SEARCH_ENGINE: 
-  STANDARD_KEYWORD:  Bürgerbeteiligung
+  API_KEY:
+  CUSTOM_SEARCH_ENGINE:
+  STANDARD_KEYWORD: Bürgerbeteiligung
